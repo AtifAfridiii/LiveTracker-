@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
     console.log("Detected localhost, trying to get public IP...");
 
     try {
-
       const publicIpResponse = await axios.get(
         "https://api.ipify.org?format=json",
         { timeout: 5000 }
@@ -26,7 +25,7 @@ export async function GET(req: NextRequest) {
       const publicIp = publicIpResponse.data.ip;
       console.log(`Public IP found: ${publicIp}`);
       ip = publicIp;
-    } catch (error) {
+    } catch (_) {
       console.warn("Could not fetch public IP, falling back to default NYC coords");
       return NextResponse.json({
         ip: "::1",
@@ -44,7 +43,6 @@ export async function GET(req: NextRequest) {
     }
   }
 
-
   try {
     const response = await axios.get(`http://ip-api.com/json/${ip}`, {
       timeout: 10000,
@@ -53,14 +51,12 @@ export async function GET(req: NextRequest) {
           "status,message,country,regionName,city,zip,lat,lon,query,isp,org",
       },
     });
-   console.log("response",response.data)
 
     return NextResponse.json({
       ip,
-     location: response.data,
-
+      location: response.data,
     });
-  } catch (err) {
+  } catch (_) {
     return NextResponse.json(
       { error: "Could not fetch geolocation" },
       { status: 500 }
