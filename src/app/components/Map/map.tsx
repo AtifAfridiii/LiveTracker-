@@ -39,7 +39,7 @@ const Map = () => {
 
   const watchIdRef = useRef<number | null>(null);
 
-  // Initialize Leaflet icons
+
   useEffect(() => {
 
 delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
@@ -52,7 +52,7 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
     });
   }, []);
 
-  // Fetch IP-based location only if no GPS location is available
+
   useEffect(() => {
     const fetchIp = async () => {
       try {
@@ -60,7 +60,7 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
         const data: { ip?: string; location?: { lat: number; lon: number } } =
           await res.json();
 
-        // Only use IP location as fallback if GPS fails
+
         if (data.location && !userLocation) {
           setCenter([data.location.lat, data.location.lon]);
         }
@@ -74,7 +74,7 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
     }
   }, [userLocation]);
 
-  // Start live location tracking automatically
+
   useEffect(() => {
     if (!navigator.geolocation) {
       setLocationError("Geolocation is not supported by this browser");
@@ -121,7 +121,7 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
     };
   }, []);
 
-  // Custom icon for user location
+
   const userLocationIcon = new L.Icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
     iconRetinaUrl:
@@ -135,7 +135,7 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
 
   return (
     <div style={{ height: "100vh", width: "100%", position: "relative" }}>
-      {/* Status Panel */}
+
       <div
         style={{
           position: "absolute",
@@ -161,12 +161,6 @@ delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIc
           </div>
         )}
 
-        {userLocation && (
-          <div>
-            <div>📊 Accuracy: ±{Math.round(userLocation.accuracy)}m</div>
-            <div>🕐 {new Date(userLocation.timestamp).toLocaleTimeString()}</div>
-          </div>
-        )}
       </div>
 
       <MapContainer
